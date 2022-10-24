@@ -11,8 +11,8 @@ test("Can I set the github property using constructor arguements", () => {
     const testName = new Engineer('owen', 3, 'engineerboss@gmail.com', 'figwhemutton');
     expect(testName.gitHub).toBe(testVal);
 });
-test('Can receive the "manager" role from getRole()', () => {
-    const testVal = 'Manager';
+test('Can receive the " an engineer" role from getRole()', () => {
+    const testVal = 'An Engineer';
     const testName = new Engineer('owen', 3, 'engineerboss@gmail.com', 'figwheymutton')
     expect(testName.getRole()).toBe(testVal);
 });
