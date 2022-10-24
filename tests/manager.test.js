@@ -9,7 +9,7 @@ test('Instantiation', () => {
 test("Can I set the office number property via constructor arguements", () => {
     const testVal = '123';
     const testName = new Manager('Bossman', 1, 'bossman123@gmail.com', '123');
-    expect(testName.ManagerId).toBe(testVal);
+    expect(testName.officeNum).toBe(testVal);
 });
 test('Can receive the "manager" role from getRole()', () => {
     const testVal = 'Manager';

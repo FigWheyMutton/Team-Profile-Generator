@@ -1,0 +1,32 @@
+.container {
+    min-width: 100%;
+    height: 200px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    background-color: pink;
+}
+
+.container2 {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+    min-width: 100%;
+}
+
+.card {
+    border-style: solid;
+    border-color: black;
+    display:flex;
+    margin: 20px;
+}
+
+.card-body {
+    display:flex;
+    background-color: blueviolet;
+    flex-direction: column;
+}
+

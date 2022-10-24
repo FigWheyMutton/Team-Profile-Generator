@@ -18,30 +18,28 @@ function menu() {
             choices: ['Manager', 'Engineer', 'Intern', "I dont want to add more"],
             type: 'list'
         },
-    ]).then((employeeAnswer) => {
-    console.log(employeeAnswer.EmployeeType)
-    if (employeeAnswer.EmployeeType === 'Manager') {
+    ]).then((answers) => {
+    console.log(answers.EmployeeType)
+    if (answers.EmployeeType === 'Manager') {
         createManager();
     }
-    if (employeeAnswer.EmployeeType === 'Engineer') {
+    if (answers.EmployeeType === 'Engineer') {
         createEngineer();
     }
-    if (employeeAnswer.EmployeeType === 'Intern') {
+    if (answers.EmployeeType === 'Intern') {
         createIntern();
     }
-    if (employeeAnswer.EmployeeType === 'I dont want to add more') {
-        fs.writeFile('Team Members.html', userInput, (err) => {
-            err ? console.log(err)
-            :console.log('Members Index Created')
-        }) 
+    if (answers.EmployeeType === 'I dont want to add more') {
+        const answerStr = writeHtml(JSON.stringify(answers))
+        //    writeMembers(answerStr)
     }
 })}
     function createManager() {
         inquirer.prompt([
             {
-                            name: 'managerName',
-                            message:'What is your name?', 
-                            type: 'input',
+                        name: 'managerName',
+                        message:'What is your name?', 
+                        type: 'input',
             },
             {
                         name: 'managerId',
@@ -60,15 +58,15 @@ function menu() {
                         message:'What is your office number?', 
                         type: 'input', 
                     },
-        ]).then (managerAnswers => {
+        ]).then (answers => {
             const manager = new Manager(
-                managerAnswers.managerName,
-                managerAnswers.managerId,
-                managerAnswers.managerEmail,
-                managerAnswers.managerOfficeNum,
+                answers.managerName,
+                answers.managerId,
+                answers.managerEmail,
+                answers.managerOfficeNum,
             );
             employees.push(manager);
-            employeeId.push(managerAnswers.managerId);
+            employeeId.push(answers.managerId);
             StartQuestion()
         })
     }
@@ -85,11 +83,6 @@ function menu() {
                     name: 'EngineerId',
                     message:'What is your Id number', 
                     type: 'input', 
-                    when: (answers) => {
-                        if(answers.employeeType === 'EngineerEngineer') {
-                            return true
-                        }
-                    }
                 },
                 {
                      name: 'EngineerEmail',
@@ -101,15 +94,15 @@ function menu() {
                     message:'What is your github account?', 
                     type: 'input',
                 },
-            ]).then (engineerAnswers => {
+            ]).then (answers => {
                 const engineer = new Engineer(
-                    engineerAnswers.EngineerName,
-                    engineerAnswers.EngineerId,
-                    engineerAnswers.EngineerEmail,
-                    engineerAnswers.Github,
+                    answers.EngineerName,
+                    answers.EngineerId,
+                    answers.EngineerEmail,
+                    answers.Github,
                 );
                 employees.push(engineer);
-                employeeId.push(engineerAnswers.engineerId);
+                employeeId.push(answers.engineerId);
                 StartQuestion()
             })
     }
@@ -137,122 +130,66 @@ function menu() {
                 message:'What is your school name?', 
                 type: 'input',
             },
-        ]).then (internAnswers => {
+        ]).then (answers => {
             const intern = new Intern(
-                internAnswers.internName,
-                internAnswers.internId,
-                internAnswers.internEmail,
-                internAnswers.school,
+                answers.internName,
+                answers.internId,
+                answers.internEmail,
+                answers.school,
             );
             employees.push(intern);
-            employeeId.push(internAnswers.internId);
+            employeeId.push(answers.internId);
             StartQuestion()
         })
 }
 
-
-
-
-// inquirer.prompt([
-
-//     {
-//         when: (answers) => {
-//             return answers.employeeType == 'Engineer'
-//         },
-//         name: 'EngineerName',
-//         message:'What is your name?', 
-//         type: 'input',
-        
-//     },
-//     {
-//         name: 'EngineerId',
-//         message:'What is your Id number', 
-//         type: 'input', 
-//         when: (answers) => {
-//             if(answers.employeeType === 'EngineerEngineer') {
-//                 return true
-//             }
-//         }
-//     },
-//     {
-//          name: 'EngineerEmail',
-//          message:'What is your email?', 
-//          type: 'input', 
-//          when: (answers) => {
-//             if(answers.employeeType === 'Engineer') {
-//                 return true
-//             }
-//         }
-//     },
-//     {
-//         name: 'Github',
-//         message:'What is your github account?', 
-//         type: 'input',
-//         when: (answers) => {
-//             if(answers.employeeType === 'Engineer') {
-//                 return true
-//             }
-//         }
-//     },
-//     ]).then((answers) => {
-//         const htmlContent = generateHtml(answers)
-//       
-
-describe('Employee', () => {
-    describe('Instantiation', () => {
-        it('Should create an instance of the class Employee', () => {
-                // Act
-                const newEmp = new Employee();
-                // Assert
-                expect(typeof newEmp).toEqual('object');
+function writeHtml(answerStr) {
+    console.log(employees)
+    fs.writeFile('team.html', answerStr, (err) => {
+        err? console.log(err)
+        : console.log('Member Html created')
     })
-    //Testing that you can correctly set, for example, the name property, of an employee instance would look like so:
-    it('Should set name via constructor arguments', () => {
-    // Arrange
-    const testValue = 'Pollux';
-    // Act
-    const newEmp = new Employee(testValue);
-    // Assert
-    expect(newEmp.name).toEqual(testValue);
-    })
-// Testing, for example, that you can get the correct output from the getName() method of an employee instance would look like so:
-    it('Should get name via getName()', () => {
-    // Arrange
-    const testValue = 'Pollux';
-    const newEmp = new Employee(testValue);
-    // Act
-    const empName = newEmp.getName()
-    // Assert
-    expect(empName).toEqual(testValue);
-    })
-})
-})
+    return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css" />
+    <title>Team Builder</title>
+    </head>
+    <body>
+    <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+    <h1 class="display-4">My Team</h1>
+    </div>
+    <div id="cards" class="container2">
+    
+    
+    </div>
+    </div>
+    </body>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="./assets/js/script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    </html>  `
+}
 
 
-
-// if (answers.EmployeeType == "Manager") {
-//     inquirer.createPromptModule([
-//     {
-//         name: 'ManagerName',
-//         message:'What is your name?', 
-//         type: 'input',
-
-//     },
-//     {
-//         name: 'ManagerId',
-//         message:'What is your Id number', 
-//         type: 'input', 
-
-//     },
-//     {
-//          name: 'ManagerEmail',
-//          message:'What is your email?', 
-//          type: 'input',
-
-//     },
-//     {
-//         name: 'ManagerOffice',
-//         message:'What is your office number?', 
-//         type: 'input', 
-//     },]
-// )}
+const cards =    ` <div class="card" style="width: 18rem;">
+<div class="card-body">
+    <h1 class="card-title">Name</h1>
+    <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+    <h2 class="card-text">Status</h2>
+</div>
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">ID</li>
+    <li class="list-group-item">Email</li>
+    <li class="list-group-item">OfficeNum</li>
+</ul>
+</div> `

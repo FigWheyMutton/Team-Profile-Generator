@@ -8,7 +8,7 @@ test('Instantiation', () => {
 })
 test("Can I set the github property using constructor arguements", () => {
     const testVal = 'figwheymutton';
-    const testName = new Engineer('owen', 3, 'engineerboss@gmail.com', 'figwhemutton');
+    const testName = new Engineer('owen', 3, 'engineerboss@gmail.com', 'figwheymutton');
     expect(testName.gitHub).toBe(testVal);
 });
 test('Can receive the " an engineer" role from getRole()', () => {
