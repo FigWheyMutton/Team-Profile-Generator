@@ -13,7 +13,7 @@ test("Can set School Name via constructor argument", () => {
     expect(testName.school).toBe(testVal);
 });
 test('Can receive the "intern" role from getRole()', () => {
-    const testVal = 'Intern';
+    const testVal = 'An Intern';
     const testName = new Intern('Ross', 4, 'ross@gmail.com', 'UCLA')
     expect(testName.getRole()).toBe(testVal);
 });

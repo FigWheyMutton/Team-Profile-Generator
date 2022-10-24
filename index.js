@@ -145,11 +145,7 @@ function menu() {
 
 function writeHtml(answerStr) {
     console.log(employees)
-    fs.writeFile('team.html', answerStr, (err) => {
-        err? console.log(err)
-        : console.log('Member Html created')
-    })
-    return `
+    const htmlBase = `
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -178,6 +174,11 @@ function writeHtml(answerStr) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
     </html>  `
+    fs.writeFile('./dist/team.html', htmlBase, (err) => {
+        err? console.log(err)
+        : console.log('Member Html created')
+    })
+    return   
 }
 
 
