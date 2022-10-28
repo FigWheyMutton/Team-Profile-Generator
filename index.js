@@ -1,64 +1,67 @@
-const inquirer = require ('inquirer')
+const inquirer = require('inquirer')
 const Employee = require('./lib/employee')
 const Manager = require('./lib/Manager')
 const Intern = require('./lib/intern')
 const Engineer = require('./lib/Engineer')
 const fs = require('fs');
-
+let ansStr;
 menu()
 const employees = [];
-const employeeId= [];
+const employeeId = [];
+let html = [];
 function menu() {
     StartQuestion()
     function StartQuestion() {
-    inquirer.prompt([
-        {
-            name: 'EmployeeType',
-            message: 'What type of employee are you?',
-            choices: ['Manager', 'Engineer', 'Intern', "I dont want to add more"],
-            type: 'list'
-        },
-    ]).then((answers) => {
-    console.log(answers.EmployeeType)
-    if (answers.EmployeeType === 'Manager') {
-        createManager();
+        inquirer.prompt([
+            {
+                name: 'EmployeeType',
+                message: 'What type of employee are you?',
+                choices: ['Manager', 'Engineer', 'Intern', "I dont want to add more"],
+                type: 'list'
+            },
+        ]).then((answers) => {
+            console.log(answers.EmployeeType)
+            if (answers.EmployeeType === 'Manager') {
+                createManager();
+            }
+            if (answers.EmployeeType === 'Engineer') {
+                createEngineer();
+            }
+            if (answers.EmployeeType === 'Intern') {
+                createIntern();
+            }
+            if (answers.EmployeeType === 'I dont want to add more') {
+                writeHtml()
+
+                //    writeMembers(answerStr)
+            }
+        })
     }
-    if (answers.EmployeeType === 'Engineer') {
-        createEngineer();
-    }
-    if (answers.EmployeeType === 'Intern') {
-        createIntern();
-    }
-    if (answers.EmployeeType === 'I dont want to add more') {
-        const answerStr = writeHtml(JSON.stringify(answers))
-        //    writeMembers(answerStr)
-    }
-})}
     function createManager() {
         inquirer.prompt([
             {
-                        name: 'managerName',
-                        message:'What is your name?', 
-                        type: 'input',
+                name: 'managerName',
+                message: 'What is your name?',
+                type: 'input',
             },
             {
-                        name: 'managerId',
-                        message:'What is your Id number', 
-                        type: 'input', 
-                
-                    },
-                    {
-                         name: 'managerEmail',
-                         message:'What is your email?', 
-                         type: 'input',
-                
-                    },
-                    {
-                        name: 'managerOfficeNum',
-                        message:'What is your office number?', 
-                        type: 'input', 
-                    },
-        ]).then (answers => {
+                name: 'managerId',
+                message: 'What is your Id number',
+                type: 'input',
+
+            },
+            {
+                name: 'managerEmail',
+                message: 'What is your email?',
+                type: 'input',
+
+            },
+            {
+                name: 'managerOfficeNum',
+                message: 'What is your office number?',
+                type: 'input',
+            },
+        ]).then(answers => {
             const manager = new Manager(
                 answers.managerName,
                 answers.managerId,
@@ -70,67 +73,66 @@ function menu() {
             StartQuestion()
         })
     }
-    
+
     function createEngineer() {
-           inquirer.prompt([
-                {
-                    name: 'EngineerName',
-                    message:'What is your name?', 
-                    type: 'input',
-                    
-                },
-                {
-                    name: 'EngineerId',
-                    message:'What is your Id number', 
-                    type: 'input', 
-                },
-                {
-                     name: 'EngineerEmail',
-                     message:'What is your email?', 
-                     type: 'input',
-                },
-                {
-                    name: 'Github',
-                    message:'What is your github account?', 
-                    type: 'input',
-                },
-            ]).then (answers => {
-                const engineer = new Engineer(
-                    answers.EngineerName,
-                    answers.EngineerId,
-                    answers.EngineerEmail,
-                    answers.Github,
-                );
-                employees.push(engineer);
-                employeeId.push(answers.engineerId);
-                StartQuestion()
-            })
+        inquirer.prompt([
+            {
+                name: 'EngineerName',
+                message: 'What is your name?',
+                type: 'input',
+
+            },
+            {
+                name: 'EngineerId',
+                message: 'What is your Id number',
+                type: 'input',
+            },
+            {
+                name: 'EngineerEmail',
+                message: 'What is your email?',
+                type: 'input',
+            },
+            {
+                name: 'Github',
+                message: 'What is your github account?',
+                type: 'input',
+            },
+        ]).then(answers => {
+            const engineer = new Engineer(
+                answers.EngineerName,
+                answers.EngineerId,
+                answers.EngineerEmail,
+                answers.Github,
+            );
+            employees.push(engineer);
+            employeeId.push(answers.engineerId);
+            StartQuestion()
+        })
     }
-}
     function createIntern() {
         inquirer.prompt([
             {
                 name: 'internName',
-                message:'What is your name?', 
+                message: 'What is your name?',
                 type: 'input',
-                
+    
             },
             {
                 name: 'internId',
-                message:'What is your Id number', 
-                type: 'input', 
+                message: 'What is your Id number',
+                type: 'input',
             },
             {
-                 name: 'internEmail',
-                 message:'What is your email?', 
-                 type: 'input', 
+                name: 'internEmail',
+                message: 'What is your email?',
+                type: 'input',
             },
             {
                 name: 'school',
-                message:'What is your school name?', 
+                message: 'What is your school name?',
                 type: 'input',
             },
-        ]).then (answers => {
+        ]).then(answers => {
             const intern = new Intern(
                 answers.internName,
                 answers.internId,
@@ -141,9 +143,10 @@ function menu() {
             employeeId.push(answers.internId);
             StartQuestion()
         })
+    }
 }
 
-function writeHtml(answerStr) {
+function writeHtml() {
     console.log(employees)
     const htmlBase = `
     <!DOCTYPE html>
@@ -163,7 +166,7 @@ function writeHtml(answerStr) {
     </div>
     <div id="cards" class="container2">
     
-    
+        ${organizeCards(employees)}
     </div>
     </div>
     </body>
@@ -175,22 +178,75 @@ function writeHtml(answerStr) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
     </html>  `
     fs.writeFile('./dist/team.html', htmlBase, (err) => {
-        err? console.log(err)
-        : console.log('Member Html created')
+        err ? console.log(err)
+            : console.log('Member Html created')
     })
-    return   
+    return
 }
 
-
-const cards =    ` <div class="card" style="width: 18rem;">
+function generateManager(managerObj) {
+    const managerCard = ` <div class="card" style="width: 18rem;">
 <div class="card-body">
-    <h1 class="card-title">Name</h1>
+    <h1 class="card-title">${managerObj.employeeName}</h1>
     <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
-    <h2 class="card-text">Status</h2>
+    <h2 class="card-text">${managerObj.getRole()}</h2>
 </div>
 <ul class="list-group list-group-flush">
-    <li class="list-group-item">ID</li>
-    <li class="list-group-item">Email</li>
-    <li class="list-group-item">OfficeNum</li>
+    <li class="list-group-item">Id: ${managerObj.employeeId}</li>
+    <li class="list-group-item">Email: ${managerObj.employeeEmail}</li>
+    <li class="list-group-item">Office Number: ${managerObj.officeNum}</li>
 </ul>
 </div> `
+    html.push(managerCard)
+}
+
+function generateEngineer(engineerObj) {
+    const EngineerCard = ` <div class="card" style="width: 18rem;">
+<div class="card-body">
+    <h1 class="card-title">${engineerObj.employeeName}</h1>
+    <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+    <h2 class="card-text">${engineerObj.getRole()}</h2>
+</div>
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">Id: ${engineerObj.employeeId}</li>
+    <li class="list-group-item">Email: ${engineerObj.employeeEmail}</li>
+    <li class="list-group-item">Github: ${engineerObj.gitHub}</li>
+</ul>
+</div> `
+    html.push(EngineerCard)
+}
+
+function generateIntern(internObj) {
+    const internCard = ` <div class="card" style="width: 18rem;">
+<div class="card-body">
+    <h1 class="card-title">${internObj.employeeName}</h1>
+    <!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+    <h2 class="card-text">${internObj.getRole()}</h2>
+</div>
+<ul class="list-group list-group-flush">
+    <li class="list-group-item">Id: ${internObj.employeeId}</li>
+    <li class="list-group-item">Email: ${internObj.employeeEmail}</li>
+    <li class="list-group-item">School: ${internObj.school}</li>
+</ul>
+</div> `
+    html.push(internCard)
+}
+
+function organizeCards(arrOfEmployees) {
+    html = [];
+
+    html.push(arrOfEmployees
+        .filter(employee => employee.getRole() === "Manager")
+        .map(manager => generateManager(manager))
+    );
+    html.push(arrOfEmployees
+        .filter(employee => employee.getRole() === "Engineer")
+        .map(engineer => generateEngineer(engineer))
+    );
+    html.push(arrOfEmployees
+        .filter(employee => employee.getRole() === "Intern")
+        .map(intern => generateIntern(intern))
+    );
+
+    return html.join('')
+}

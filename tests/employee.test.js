@@ -37,7 +37,7 @@ test('Check to see that getEmail() works correctly',() => {
     expect(testName.employeeEmail).toBe(testVal)
 })
 test('check to see that getRole() gives the correct output',() => {
-    const testVal = 'An Employee';
+    const testVal = 'Employee';
     const testName = new Employee('Luffy',5, 'luffyonepiece@gmail.com')
-    expect(testName.employee).toBe(testVal)
+    expect(testName.employeeRole).toBe(testVal)
 })
